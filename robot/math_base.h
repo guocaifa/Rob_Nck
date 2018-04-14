@@ -29,6 +29,11 @@ typedef struct
 	double  Val[4][4];
 }matrix;
 
+typedef struct
+{
+  double  Val[3];
+}point;
+
 extern void MultMatrix(matrix *pResult, matrix *pFirst, matrix *pSecond);
 
 extern bool MatrixBackwards(matrix *pMatrix);
