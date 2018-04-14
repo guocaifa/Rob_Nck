@@ -29,6 +29,12 @@
 
 typedef struct
 {
+  double xCoor[3];  /* xyz */
+  double xQuat[4];  /* q1,q2,q3,q4 */
+}coorquat;
+
+typedef struct
+{
 	u32   RodDistance[6]; /* 连杆距离 */
 	u32   RodLength[6];   /* 连杆长度 */
 }robotpara;
@@ -45,7 +51,7 @@ typedef struct
 	double      xAngleCrn[6];    /* 每个轴的当前角度        */
 	double      xAngleNxt[6];    /* 每个轴的目标角度        */
 
-  robotpara   xParameter;      /* 机器人的机械尺寸        */
+    robotpara   xParameter;      /* 机器人的机械尺寸        */
 
 	matrix      xStatusCrn;      /* 当前机器人的状态        */
 	matrix      xStatusNxt;      /* 下一次机器人的状态      */

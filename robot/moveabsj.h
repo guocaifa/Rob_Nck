@@ -3,6 +3,6 @@
 
 #include "linuxtypes.h"
 
-extern void MoveAbsJoint(double *AngleCrn, double *AngleTarget, double Vmax, const u8 Cycle);
+extern void MoveAbsJoint(double *AngleTarget, double Vmax);
 
 #endif // MOVEABSJ_H

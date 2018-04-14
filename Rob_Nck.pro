@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     robot/math_base.cpp \
     robot/nck.cpp \
     robot/robot.cpp \
-    robot/moveabsj.cpp
+    robot/moveabsj.cpp \
+    robot/movel.cpp
 
 HEADERS  += \
     robot/auto.h \
@@ -27,4 +28,5 @@ HEADERS  += \
     robot/math_base.h \
     robot/nck.h \
     robot/robot.h \
-    robot/moveabsj.h
+    robot/moveabsj.h \
+    robot/movel.h
