@@ -14,11 +14,11 @@ static void GetCycleO(point *pO, const point *pCrn, const point *pMid, const poi
 {
 
   /* x */
-  pO->Val[0] = ;
+//  pO->Val[0] = ;
   /* y */
-  pO->Val[1] = ;
+//  pO->Val[1] = ;
   /* z */
-  pO->Val[2] = ;
+//  pO->Val[2] = ;
 
   return;
 }

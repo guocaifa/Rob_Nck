@@ -27,15 +27,20 @@
 typedef struct
 {
 	double  Val[4][4];
-}matrix;
+}matrix4_4;
+
+typedef struct
+{
+  double  Val[3][3];
+}matrix3_3;
 
 typedef struct
 {
   double  Val[3];
 }point;
 
-extern void MultMatrix(matrix *pResult, matrix *pFirst, matrix *pSecond);
+extern void MultMatrix(matrix4_4 *pResult, matrix4_4 *pFirst, matrix4_4 *pSecond);
 
-extern bool MatrixBackwards(matrix *pMatrix);
+extern bool MatrixBackwards(matrix4_4 *pMatrix);
 
 #endif

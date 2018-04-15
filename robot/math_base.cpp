@@ -31,11 +31,11 @@
  * 返 回 值:
  * 说    明:pResult = pFirst * pSexcond
 */
-extern void MultMatrix(matrix *pResult, matrix *pFirst, matrix *pSecond)
+extern void MultMatrix(matrix4_4 *pResult, matrix4_4 *pFirst, matrix4_4 *pSecond)
 {
 	int     i,j;
 
-	memset(pResult, 0, sizeof(matrix));
+  memset(pResult, 0, sizeof(matrix4_4));
 
 	for(j = 0;j < 4;j++){
 		for(i = 0; i < 4; i++){

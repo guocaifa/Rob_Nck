@@ -26,21 +26,22 @@
 #include "moveabsj.h"
 #include "robot.h"
 
-static double GetJitMaxTime(const double *pAngleCrn, const double *pAngleNxt, const double Vmax);
+static double GetJitMaxTime(double *pAngleCrn, double *pAngleNxt, const double Vmax);
 
 extern void MoveAbsJoint(double *AngleTarget, double Vmax)
 {
   double RunT      = 0, RunTMax,
-         dRunCycle = xRobSys.xInpParameter.InpCycle;
+         dRunCycle = (double)xRobSys.xInpParameter.InpCycle;
+  double Cycle2    = dRunCycle / 2;
   double a[4];
 
   RunTMax = GetJitMaxTime(xRobSys.xAngleCrn, AngleTarget, Vmax);
 
   if(RunTMax != 0){/*  */
 
-    if((RunTMax % dRunCycle) >= (dRunCycle / 2))   RunTMax++;
+//    if(((RunTMax % dRunCycle) >= Cycle2))   RunTMax++;
 
-    while(RunT <= RunMax){/* 运行到目标点 */
+    while(RunT <= RunTMax){/* 运行到目标点 */
       for(int i = 0; i < 6; i++){
 
         a[0] = xRobSys.xAngleCrn[i];
@@ -60,7 +61,7 @@ extern void MoveAbsJoint(double *AngleTarget, double Vmax)
   return;
 }
 
-static double GetJitMaxTime(const double *pAngleCrn, const double *pAngleNxt, const double Vmax)
+static double GetJitMaxTime(double *pAngleCrn, double *pAngleNxt, const double Vmax)
 {
   double  Tmax = 0;
   double  AngleMax = 0;

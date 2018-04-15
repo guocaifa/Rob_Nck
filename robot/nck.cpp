@@ -77,10 +77,10 @@ extern void InitRobotParameter(robsys *pSys)
  * 参    数：
  * 返 回 值：无
 */
-extern void GetRobStatusCrn(matrix *pStatusCrn, robotpara *pRobPara, double *pAngle)
+extern void GetRobStatusCrn(matrix4_4 *pStatusCrn, robotpara *pRobPara, double *pAngle)
 {
   double *AngleCrn = pAngle;
-	matrix  StatusCrn;
+  matrix4_4  StatusCrn;
 
 	double c1,s1,c2,s2,c3,s3,c4,s4,c5,s5,c6,s6;
 	double c23,s23;
@@ -123,7 +123,7 @@ extern void GetRobStatusCrn(matrix *pStatusCrn, robotpara *pRobPara, double *pAn
 	StatusCrn.Val[3][2] = 0;
 	StatusCrn.Val[3][3] = 1;
 
-  memcpy(pStatusCrn, &StatusCrn, sizeof(matrix));/* 可重载 */
+  memcpy(pStatusCrn, &StatusCrn, sizeof(matrix4_4));/* 可重载 */
 
 	return;
 }
@@ -132,9 +132,9 @@ extern void GetRobStatusCrn(matrix *pStatusCrn, robotpara *pRobPara, double *pAn
  * 参    数：
  * 返 回 值：无
 */
-extern void GetRobJointAngle(matrix *pRobStatus, robotpara *pRobPara, double *pAngle)
+extern void GetRobJointAngle(matrix4_4 *pRobStatus, robotpara *pRobPara, double *pAngle)
 {
-	matrix *RobStatus = pRobStatus; 
+  matrix4_4 *RobStatus = pRobStatus;
 	double *Angle    = pAngle;
 	double  Angle23;
 

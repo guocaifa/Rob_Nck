@@ -51,10 +51,10 @@ typedef struct
 	double      xAngleCrn[6];    /* 每个轴的当前角度        */
 	double      xAngleNxt[6];    /* 每个轴的目标角度        */
 
-    robotpara   xParameter;      /* 机器人的机械尺寸        */
+  robotpara   xParameter;      /* 机器人的机械尺寸        */
 
-	matrix      xStatusCrn;      /* 当前机器人的状态        */
-	matrix      xStatusNxt;      /* 下一次机器人的状态      */
+  matrix4_4   xStatusCrn;      /* 当前机器人的状态        */
+  matrix4_4   xStatusNxt;      /* 下一次机器人的状态      */
 
   inppara     xInpParameter;   /* 机器人运动插补参数      */
 

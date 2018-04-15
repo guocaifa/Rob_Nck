@@ -29,5 +29,4 @@ robsys  xRobSys;
 extern void InitRobSys(robsys *pRobSys)
 {
   InitRobotParameter(pRobSys);
-  InitRobotStatus(pRobSys);
 }
