@@ -46,6 +46,15 @@ typedef struct
   double  DcaSpd;       /* 空间运动指令最大速度 */
 }inppara;
 
+typedef struct movebuff
+{
+  u8     uCmd;    /* 运动指令  */
+  u16    uSpd;    /* 速度     */
+  u32    uMid[8]; /* 中间点   */
+  u32    uTrg[8]; /* 终点     */
+  struct movebuff *pNxt;
+}movebuff;
+
 typedef struct
 {
 	double      xAngleCrn[6];    /* 每个轴的当前角度        */
@@ -57,6 +66,8 @@ typedef struct
   matrix4_4   xStatusNxt;      /* 下一次机器人的状态      */
 
   inppara     xInpParameter;   /* 机器人运动插补参数      */
+
+  movebuff    xMoveBuff[5];    /* 机器人的运动参数        */
 
 }robsys;
 
