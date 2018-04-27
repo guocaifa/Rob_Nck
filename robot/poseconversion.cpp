@@ -81,8 +81,24 @@ extern void quat2matrix(double *pQuat ,matrix3_3 *pMatriPose)
   return;
 }
 
-extern void matrix2quat(matrix3_3 *pMatriPose ,double *pQuat)
+extern void matrix2quat(matrix3_3 *pMatrixPose ,double *pQuat)
 {
+  matrix3_3 *Matrix = pMatrixPose;
+  double *Quat = pQuat;
+  double nx,ny,nz,ox,oy,oz,ax,ay,az;
+  double
+
+  nx = Matrix->Val[0][0];  ox = Matrix->Val[0][1];  ax = Matrix->Val[0][2];
+  ny = Matrix->Val[1][0];  oy = Matrix->Val[1][1];  ay = Matrix->Val[1][2];
+  nz = Matrix->Val[2][0];  oz = Matrix->Val[2][1];  az = Matrix->Val[2][2];
+
+  Quat[0] = sqrt(1 + nx + oy + az) / 2;
+  if(Quat[0] != 0){
+    Quat[1] = (oz - ay)/(4 * Quat[0]);
+    Quat[2] = (ax - nz)/(4 * Quat[0]);
+    Quat[3] = (ny - ox)/(4 * Quat[0]);
+  }
+
   return;
 }
 

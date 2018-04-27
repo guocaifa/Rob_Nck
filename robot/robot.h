@@ -57,6 +57,15 @@ typedef struct movebuff
 
 typedef struct
 {
+
+  bool        xRunStatus;      /* 系统运行状态           */
+
+  double      xJointAccUp;     /* 关节的加速度           */
+  double      xJointAccDwn;    /* 关节的减速度           */
+  double      xJointSpdMax;    /* 关节最大速度           */
+
+  double      xDecareAcc;      /* 笛卡尔下的坐标系加速度   */
+
 	double      xAngleCrn[6];    /* 每个轴的当前角度        */
 	double      xAngleNxt[6];    /* 每个轴的目标角度        */
 

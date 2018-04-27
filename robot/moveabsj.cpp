@@ -26,13 +26,13 @@
 #include "moveabsj.h"
 #include "robot.h"
 
-static double GetJitMaxTime(double *pAngleCrn, double *pAngleNxt, const double Vmax);
+static int GetJitMaxTime(double *pAngleCrn, double *pAngleNxt, const double Vmax);
 
 extern void MoveAbsJoint(double *AngleTarget, double Vmax)
 {
   double RunT      = 0, RunTMax,
-         dRunCycle = (double)xRobSys.xInpParameter.InpCycle;
-  double Cycle2    = dRunCycle / 2;
+         dRunCycle = (double)xRobSys.xInpParameter.InpCycle;/* ²å²¹ÖÜÆÚ */
+//  double Cycle1_2  = dRunCycle / 2;
   double a[4];
 
   RunTMax = GetJitMaxTime(xRobSys.xAngleCrn, AngleTarget, Vmax);
@@ -61,10 +61,12 @@ extern void MoveAbsJoint(double *AngleTarget, double Vmax)
   return;
 }
 
-static double GetJitMaxTime(double *pAngleCrn, double *pAngleNxt, const double Vmax)
+static int GetJitMaxTime(double *pAngleCrn, double *pAngleNxt, const double Vmax)
 {
-  double  Tmax = 0;
+  int     Tmax = 0;
   double  AngleMax = 0;
+
+  int     UpCycle,DwnCycle;
 
   double  AngleDiff[6];
 
@@ -78,7 +80,14 @@ static double GetJitMaxTime(double *pAngleCrn, double *pAngleNxt, const double V
 
   for(int i = 0; i < 6; i++)    AngleMax = MAX(AngleMax, AngleDiff[i]);
 
-  Tmax = AngleMax / Vmax;
+  if(AngleMax == 0)                                                  Tmax = 0;
+  else if(AngleMax <= (xRobSys.xJointAccUp + xRobSys.xJointAccDwn))  Tmax = 2;
+  else{
+    UpCycle  = xRobSys.xJointSpdMax / xRobSys.xJointAccUp;
+    DwnCycle = xRobSys.xJointSpdMax / xRobSys.xJointAccDwn;
+
+
+  }
 
   return Tmax;
 
