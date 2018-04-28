@@ -26,20 +26,16 @@
 #include "moveabsj.h"
 #include "robot.h"
 
-static int GetJitMaxTime(double *pAngleCrn, double *pAngleNxt, const double Vmax);
+static int GetJitMaxTime(double *pAngleCrn, double *pAngleNxt);
 
 extern void MoveAbsJoint(double *AngleTarget, double Vmax)
 {
-  double RunT      = 0, RunTMax,
-         dRunCycle = (double)xRobSys.xInpParameter.InpCycle;/* 插补周期 */
-//  double Cycle1_2  = dRunCycle / 2;
+  double RunTMax,RunT = 0;
   double a[4];
 
-  RunTMax = GetJitMaxTime(xRobSys.xAngleCrn, AngleTarget, Vmax);
+  RunTMax = GetJitMaxTime(xRobSys.xAngleCrn, AngleTarget);
 
   if(RunTMax != 0){/*  */
-
-//    if(((RunTMax % dRunCycle) >= Cycle2))   RunTMax++;
 
     while(RunT <= RunTMax){/* 运行到目标点 */
       for(int i = 0; i < 6; i++){
@@ -52,7 +48,7 @@ extern void MoveAbsJoint(double *AngleTarget, double Vmax)
         xRobSys.xAngleCrn[i] = a[0] + a[1] + a[2] * RunT * RunT + a[3] * RunT * RunT * RunT;
       }
 
-      RunT += dRunCycle;
+      RunT += 1;
 
       /* 发送角度给电机 */
     }
@@ -61,12 +57,18 @@ extern void MoveAbsJoint(double *AngleTarget, double Vmax)
   return;
 }
 
-static int GetJitMaxTime(double *pAngleCrn, double *pAngleNxt, const double Vmax)
+static int GetJitMaxTime(double *pAngleCrn, double *pAngleNxt)
 {
-  int     Tmax = 0;
+  int     nCycle = 0;
   double  AngleMax = 0;
 
-  int     UpCycle,DwnCycle;
+  double  dUpL,dDwnL;
+  int     iUpT,iDwnT,iCstT;
+  double  UpAcc  = xRobSys.xInpParameter.xJointAccUp,
+          DwnAcc = xRobSys.xInpParameter.xJointAccDwn,
+          SpdMax = xRobSys.xInpParameter.xJointSpdMax,
+          SpdMax2,/* 最大速度的平方 */
+          SpdCrn = 0;
 
   double  AngleDiff[6];
 
@@ -80,15 +82,31 @@ static int GetJitMaxTime(double *pAngleCrn, double *pAngleNxt, const double Vmax
 
   for(int i = 0; i < 6; i++)    AngleMax = MAX(AngleMax, AngleDiff[i]);
 
-  if(AngleMax == 0)                                                  Tmax = 0;
-  else if(AngleMax <= (xRobSys.xJointAccUp + xRobSys.xJointAccDwn))  Tmax = 2;
+  if(AngleMax == 0)                      nCycle = 0;
+  else if(AngleMax <= (UpAcc + DwnAcc))  nCycle = 2;
   else{
-    UpCycle  = xRobSys.xJointSpdMax / xRobSys.xJointAccUp;
-    DwnCycle = xRobSys.xJointSpdMax / xRobSys.xJointAccDwn;
+    SpdMax2 = SpdMax * SpdMax;
+    dUpL    = SpdMax2 / (2 * UpAcc);
+    dDwnL   = SpdMax2 / (2 * DwnAcc);
 
+    if(AngleMax < dUpL + dDwnL){
+      iUpT = iDwnT = 1;
 
+      AngleMax -= (dUpL + dDwnL);
+      iCstT = AngleMax / SpdMax;
+
+    }
+    else{
+      iUpT  = SpdMax / UpAcc;
+      iDwnT = SpdMax / DwnAcc;
+
+      AngleMax -= (dUpL + dDwnL);
+      iCstT = AngleMax / SpdMax;
+    }
+
+    nCycle = (iUpT + iDwnT + iCstT);/* 加速时间 + 减速时间 + 匀速时间 */
   }
 
-  return Tmax;
+  return nCycle;
 
 }

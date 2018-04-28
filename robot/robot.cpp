@@ -48,3 +48,19 @@ static void InitMoveBuff(movebuff *pMoveCmdBuff, int xNum)
 
   return;
 }
+
+extern void Quat2Matrix(matrix4_4 *pMatrix, coorquat *pCoorQuat)
+{
+  quat2matrix(pCoorQuat->xQuat, pMatrix);
+
+  pMatrix[0][3] = pCoorQuat->xCoor[0];
+  pMatrix[1][3] = pCoorQuat->xCoor[1];
+  pMatrix[2][3] = pCoorQuat->xCoor[2];
+
+  pMatrix[3][0] = 0;
+  pMatrix[3][1] = 0;
+  pMatrix[3][2] = 0;
+  pMatrix[3][3] = 1;
+
+  return;
+}

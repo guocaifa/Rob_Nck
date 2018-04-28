@@ -27,6 +27,8 @@
 #include "linuxtypes.h"
 #include "math_base.h"
 
+typedef  const double    cdouble;
+
 typedef struct
 {
   double xCoor[3];  /* xyz */
@@ -41,30 +43,28 @@ typedef struct
 
 typedef struct
 {
-  u8      InpCycle;     /* 插补周期  */
-  double  JitSpd;       /* 关节运动最大速度 */
-  double  DcaSpd;       /* 空间运动指令最大速度 */
+  u8        InpCycle;     /* 插补周期  */
+  double    xJointAccUp;     /* 关节的加速度           */
+  double    xJointAccDwn;    /* 关节的减速度           */
+  double    xJointSpdMax;    /* 关节最大速度           */
+
+  cdouble   aInpMax;         /* 笛卡尔下的插补大小      */
+  double    xDecareAcc;      /* 笛卡尔下的坐标系加速度   */
 }inppara;
 
 typedef struct movebuff
 {
-  u8     uCmd;    /* 运动指令  */
-  u16    uSpd;    /* 速度     */
-  u32    uMid[8]; /* 中间点   */
-  u32    uTrg[8]; /* 终点     */
-  struct movebuff *pNxt;
+  u8        uCmd;    /* 运动指令  */
+  u16       uSpd;    /* 速度     */
+  u32       uMid[8]; /* 中间点   */
+  u32       uTrg[8]; /* 终点     */
+  struct    movebuff *pNxt;
 }movebuff;
 
 typedef struct
 {
 
   bool        xRunStatus;      /* 系统运行状态           */
-
-  double      xJointAccUp;     /* 关节的加速度           */
-  double      xJointAccDwn;    /* 关节的减速度           */
-  double      xJointSpdMax;    /* 关节最大速度           */
-
-  double      xDecareAcc;      /* 笛卡尔下的坐标系加速度   */
 
 	double      xAngleCrn[6];    /* 每个轴的当前角度        */
 	double      xAngleNxt[6];    /* 每个轴的目标角度        */
@@ -76,12 +76,14 @@ typedef struct
 
   inppara     xInpParameter;   /* 机器人运动插补参数      */
 
-  movebuff    xMoveBuff[5];    /* 机器人的运动参数        */
+  movebuff    xMoveBuff[5];    /* 机器人的运动缓冲区      */
 
 }robsys;
 
 extern robsys  xRobSys;
 
 extern void InitRobSys(robsys *pRobSys);
+
+extern void Quat2Matrix(matrix4_4 *pMatrix, coorquat *pCoorQuat);
 
 #endif

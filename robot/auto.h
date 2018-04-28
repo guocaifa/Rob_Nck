@@ -28,15 +28,12 @@
 #include "linuxtypes.h"
 
 
-
-
-
 #define MOVE_NONE    0x00
 #define MOVE_ABSJ    0x01
 #define MOVE_J       0x02
 #define MOVE_L       0x03
 #define MOVE_C       0x04
 
-
+extern void AutoMode();
 
 #endif
