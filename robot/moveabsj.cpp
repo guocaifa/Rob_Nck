@@ -48,6 +48,15 @@ extern void MoveAbsJoint(double *AngleTarget, double Vmax)
         xRobSys.xAngleCrn[i] = a[0] + a[1] + a[2] * RunT * RunT + a[3] * RunT * RunT * RunT;
       }
 
+      for(int i = 0; i < 6 ; i++){
+        if(xRobSys.xAngleCrn[i] >= xRobSys.aRange[i][0]&& xRobSys.xAngleCrn[i] <= xRobSys.aRange[i][1])
+          continue;
+        else{
+          xRobSys.xRunStatus = false;
+          break;
+        }
+      }
+
       RunT += 1;
 
       /* 发送角度给电机 */

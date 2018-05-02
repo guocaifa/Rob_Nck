@@ -5,7 +5,7 @@
  *                         All Rights Reserved
  *
  *-----------------------文件信息-----------------------------------------------
- * 文件名: .h
+ * 文件名: .c
  * 描  述:
  *
  * 创建人:
@@ -20,16 +20,6 @@
  * 说明:
  *
  *...
-*******************************************************************************/
+ ******************************************************************************/
+#include "tool.h"
 
-#ifndef MOVEC_H
-#define MOVEC_H
-
-#include <math.h>
-
-#include "robot.h"
-#include "linuxtypes.h"
-
-extern void MoveC(coorquat *pMid, coorquat *pTgt, double Vmax);
-
-#endif // MOVEC_H

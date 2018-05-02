@@ -37,13 +37,25 @@ typedef struct
 
 typedef struct
 {
+  double xCoor[3];  /* xyz */
+  double xEuler[3]; /* q1,q2,q3 */
+}cooreuler;
+
+typedef struct
+{
 	u32   RodDistance[6]; /* 连杆距离 */
 	u32   RodLength[6];   /* 连杆长度 */
 }robotpara;
 
 typedef struct
 {
-  u8        InpCycle;     /* 插补周期  */
+  double   xSpd[6];          /* 六个轴的最大速度 */
+}spd;
+
+typedef struct
+{
+  u8        InpCycle;        /* 插补周期  */
+
   double    xJointAccUp;     /* 关节的加速度           */
   double    xJointAccDwn;    /* 关节的减速度           */
   double    xJointSpdMax;    /* 关节最大速度           */
@@ -65,6 +77,9 @@ typedef struct
 {
 
   bool        xRunStatus;      /* 系统运行状态           */
+
+  cdouble     aRange[6][2];    /* 每个轴的关节范围        */
+  spd         aAxisSpd;        /* 六个轴的最大速度        */
 
 	double      xAngleCrn[6];    /* 每个轴的当前角度        */
 	double      xAngleNxt[6];    /* 每个轴的目标角度        */

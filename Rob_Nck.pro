@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     robot/moveabsj.cpp \
     robot/movel.cpp \
     robot/movec.cpp \
-    robot/poseconversion.cpp
+    robot/poseconversion.cpp \
+    robot/tool.cpp
 
 HEADERS  += \
     robot/auto.h \
@@ -33,4 +34,5 @@ HEADERS  += \
     robot/moveabsj.h \
     robot/movel.h \
     robot/movec.h \
-    robot/poseconversion.h
+    robot/poseconversion.h \
+    robot/tool.h
