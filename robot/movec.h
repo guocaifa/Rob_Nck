@@ -30,6 +30,6 @@
 #include "robot.h"
 #include "linuxtypes.h"
 
-extern void MoveC(coorquat *pMid, coorquat *pTgt, double Vmax);
+extern void MoveC(coorquat *pCrn, coorquat *pMid, coorquat *pTgt, double Vmax, double Acc);
 
 #endif // MOVEC_H
