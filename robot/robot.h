@@ -60,7 +60,7 @@ typedef struct
   double    xJointAccDwn;    /* 关节的减速度           */
   double    xJointSpdMax;    /* 关节最大速度           */
 
-  cdouble   aInpMax;         /* 笛卡尔下的插补大小      */
+  double    aInpMax;         /* 笛卡尔下的插补大小      */
   double    xDecareAcc;      /* 笛卡尔下的坐标系加速度   */
 }inppara;
 
@@ -78,7 +78,7 @@ typedef struct
 
   bool        xRunStatus;      /* 系统运行状态           */
 
-  cdouble     aRange[6][2];    /* 每个轴的关节范围        */
+  double      aRange[6][2];    /* 每个轴的关节范围        */
   spd         aAxisSpd;        /* 六个轴的最大速度        */
 
 	double      xAngleCrn[6];    /* 每个轴的当前角度        */
@@ -100,5 +100,7 @@ extern robsys  xRobSys;
 extern void InitRobSys(robsys *pRobSys);
 
 extern void Quat2Matrix(matrix4_4 *pMatrix, coorquat *pCoorQuat);
+
+extern void QuatMulti(coorquat *pResult, coorquat *pFirst, coorquat *pSecond);
 
 #endif

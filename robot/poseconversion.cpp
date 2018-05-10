@@ -109,7 +109,6 @@ extern void matrix2quat(matrix3_3 *pMatrixPose ,double *pQuat)
   matrix3_3 *Matrix = pMatrixPose;
   double *Quat = pQuat;
   double nx,ny,nz,ox,oy,oz,ax,ay,az;
-  double
 
   nx = Matrix->Val[0][0];  ox = Matrix->Val[0][1];  ax = Matrix->Val[0][2];
   ny = Matrix->Val[1][0];  oy = Matrix->Val[1][1];  ay = Matrix->Val[1][2];

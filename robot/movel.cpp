@@ -25,8 +25,8 @@
 
 extern void MoveL(cooreuler *pStatusCrn, cooreuler *pStatusNxt, double dAcc, double dVmax)
 {
-  coorquat *Crn = pStatusCrn;
-  coorquat *Nxt = pStatusNxt;
+  cooreuler *Crn = pStatusCrn;
+  cooreuler *Nxt = pStatusNxt;
 
   double nInp[3],DetaInp[3];
   int    nInpMax = 0;/* ฒๅฒนดฮสý */

@@ -201,3 +201,52 @@ extern void RodShiftFormula(robsys *pSys)
 {
 	return;
 }
+
+/* 函数说明：
+ * 参   数：
+ * 返 回 值：需要多少个插补周期
+*/
+extern int PostureInp(coorquat *pQuatS, coorquat *pQuatE, double xVmax, double xAcc)
+{
+  double xAngle;/* 弧度单位 */
+  double xQuatMulti;
+  int    nCycle,iUpT,iDwnT,iCstT;
+  double SpdMax2,dUpL;
+
+  double q0s = pQuatS->xQuat[0], q1s = pQuatS->xQuat[1],\
+         q2s = pQuatS->xQuat[2], q3s = pQuatS->xQuat[3],\
+         q0e = pQuatE->xQuat[0], q1e = pQuatE->xQuat[1],\
+         q2e = pQuatE->xQuat[2], q3e = pQuatE->xQuat[3];\
+
+  xQuatMulti = q0s * q0e + q1s * q1e + q2s * q2e + q3s * q3e;
+
+  if((xQuatMulti - 1) < 0.00001)       xQuatMulti = 1;
+  else if((xQuatMulti + 1) < -0.00001) xQuatMulti = -1;
+
+  xAngle = acos(xQuatMulti);/* 两个四元数之前的夹角 */
+
+  if(xAngle <= 0.000001)  xAngle = 0;
+
+  if(xAngle == 0)                     nCycle = 0;
+  else if(xAngle <= (xAcc + xAcc))    nCycle = 2;
+  else{
+    SpdMax2 = xVmax * xVmax;
+    dUpL    = SpdMax2 / (2 * xAcc);
+
+    if(xAngle < dUpL + dUpL){
+      iUpT = iDwnT = 1;
+
+      xAngle -= (xVmax + xVmax);
+      iCstT = xAngle / xVmax;
+    }
+    else{
+      iUpT  = xVmax / xAcc;
+
+      xAngle -= (dUpL + dUpL);
+      iCstT = xAngle / xVmax;
+    }
+    nCycle = (iUpT + iDwnT + iCstT);
+  }
+
+  return;
+}

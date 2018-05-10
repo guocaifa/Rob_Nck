@@ -21,20 +21,27 @@
  *
  *...
  ******************************************************************************/
-
+#include <string.h>
 #include "movec.h"
 
 static void GetCycleProperty(cycle *pCycle, point *pCrn, point *pMid, point *pTrg);
 
 extern void MoveC(cooreuler *pCrn, cooreuler *pMid, cooreuler *pTgt, double Vmax, double Acc)
 {
-  double TMax;
+  double Tmax;
+  point  PointS,PointM,PointE;
   point  PCrn;
 
   cycle Property;
   memset(&Property, 0, sizeof(cycle));
 
-  GetCycleProperty(&Property, pCrn->xCoor, pMid->xCoor, pTgt->xCoor);
+  for(int i = 0; i < 3; i++){
+    PointS.Val[i] = pCrn->xCoor[i];
+    PointM.Val[i] = pMid->xCoor[i];
+    PointE.Val[i] = pTgt->xCoor[i];
+  }
+
+  GetCycleProperty(&Property, &PointS, &PointM, &PointE);
 
   Vmax = Vmax / Property.xR;/* 线速度->角速度 */
 
@@ -72,9 +79,9 @@ static void GetCycleO(point *pO, const point *pCrn, const point *pMid, const poi
 
 static void GetCycleProperty(cycle *pCycle, point *pCrn, point *pMid, point *pTrg)
 {
-  double k11,k12,k13,\k14, \
-         k21,k22,k23,\k24, \
-         k31,k32,k33,\k34; \
+  double k11,k12,k13,k14,
+         k21,k22,k23,k24,
+         k31,k32,k33,k34;
 
   double x1 = pCrn->Val[0], y1 = pCrn->Val[1], z1 = pCrn->Val[2], \
          x2 = pMid->Val[0], y2 = pMid->Val[1], z2 = pMid->Val[2], \
@@ -123,28 +130,28 @@ static void GetCycleProperty(cycle *pCycle, point *pCrn, point *pMid, point *pTr
   pCycle->xR = sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0) + (z1 - z0) * (z1 - z0));
 
   /* n1 */
-  pCycle->xTran[0][0] = X2 = (x1 - x0) / pCycle->xR;
-  pCycle->xTran[1][0] = Y2 = (y1 - y0) / pCycle->xR;
-  pCycle->xTran[2][0] = Z2 = (z1 - z0) / pCycle->xR;
-  pCycle->xTran[3][0] = 0;
+  pCycle->xTran.Val[0][0] = X2 = (x1 - x0) / pCycle->xR;
+  pCycle->xTran.Val[1][0] = Y2 = (y1 - y0) / pCycle->xR;
+  pCycle->xTran.Val[2][0] = Z2 = (z1 - z0) / pCycle->xR;
+  pCycle->xTran.Val[3][0] = 0;
   /* a1 */
   _k = sqrt(k11 * k11 + k12 * k12 + k13 * k13);
-  pCycle->xTran[0][2] = X1 = k11 / _k;
-  pCycle->xTran[1][2] = Y1 = k12 / _k;
-  pCycle->xTran[2][2] = Z1 = k13 / _k;
-  pCycle->xTran[3][2] = 0;
+  pCycle->xTran.Val[0][2] = X1 = k11 / _k;
+  pCycle->xTran.Val[1][2] = Y1 = k12 / _k;
+  pCycle->xTran.Val[2][2] = Z1 = k13 / _k;
+  pCycle->xTran.Val[3][2] = 0;
 
   /* o1 = a1 * n1 */
-  pCycle->xTran[0][1] = Y1 * Z2 - Y2 * Z1;
-  pCycle->xTran[1][1] = Z1 * X2 - Z2 * X1;
-  pCycle->xTran[2][1] = X1 * Y2 - X2 * Y1;
-  pCycle->xTran[3][1] = 0;
+  pCycle->xTran.Val[0][1] = Y1 * Z2 - Y2 * Z1;
+  pCycle->xTran.Val[1][1] = Z1 * X2 - Z2 * X1;
+  pCycle->xTran.Val[2][1] = X1 * Y2 - X2 * Y1;
+  pCycle->xTran.Val[3][1] = 0;
 
   /* p0 */
-  pCycle->xTran[0][3] = x1;
-  pCycle->xTran[1][3] = y1;
-  pCycle->xTran[2][3] = z1;
-  pCycle->xTran[3][3] = 1;
+  pCycle->xTran.Val[0][3] = x1;
+  pCycle->xTran.Val[1][3] = y1;
+  pCycle->xTran.Val[2][3] = z1;
+  pCycle->xTran.Val[3][3] = 1;
 
   if(atan2(p21y,p21x) < 0)  AngP1OP2 = atan2(p21y,p21x) + 2 * PI;
   else                      AngP1OP2 = atan2(p21y,p21x);

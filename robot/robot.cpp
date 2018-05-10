@@ -23,6 +23,7 @@
  ******************************************************************************/
 #include "robot.h"
 #include "nck.h"
+#include "poseconversion.h"
 
 robsys  xRobSys;
 
@@ -32,7 +33,6 @@ extern void InitRobSys(robsys *pRobSys)
 {
   InitRobotParameter(pRobSys);
   InitMoveBuff(pRobSys->xMoveBuff, 5);
-
   return;
 }
 
@@ -51,16 +51,24 @@ static void InitMoveBuff(movebuff *pMoveCmdBuff, int xNum)
 
 extern void Quat2Matrix(matrix4_4 *pMatrix, coorquat *pCoorQuat)
 {
-  quat2matrix(pCoorQuat->xQuat, pMatrix);
+  matrix3_3  R;
 
-  pMatrix[0][3] = pCoorQuat->xCoor[0];
-  pMatrix[1][3] = pCoorQuat->xCoor[1];
-  pMatrix[2][3] = pCoorQuat->xCoor[2];
+  quat2matrix(pCoorQuat->xQuat, &R);
 
-  pMatrix[3][0] = 0;
-  pMatrix[3][1] = 0;
-  pMatrix[3][2] = 0;
-  pMatrix[3][3] = 1;
+  for(int i = 0;i < 3; i++){
+    for(int j = 0; j < 3; j++){
+      pMatrix->Val[i][j] = R.Val[i][j];
+    }
+  }
+
+  pMatrix->Val[0][3] = pCoorQuat->xCoor[0];
+  pMatrix->Val[1][3] = pCoorQuat->xCoor[1];
+  pMatrix->Val[2][3] = pCoorQuat->xCoor[2];
+
+  pMatrix->Val[3][0] = 0;
+  pMatrix->Val[3][1] = 0;
+  pMatrix->Val[3][2] = 0;
+  pMatrix->Val[3][3] = 1;
 
   return;
 }
