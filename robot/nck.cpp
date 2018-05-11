@@ -206,7 +206,7 @@ extern void RodShiftFormula(robsys *pSys)
  * 参   数：
  * 返 回 值：需要多少个插补周期
 */
-extern int PostureInp(coorquat *pQuatS, coorquat *pQuatE, double xVmax, double xAcc)
+extern void PostureInp(quatinp *pInpPara,coorquat *pQuatS, coorquat *pQuatE, double xVmax, double xAcc)
 {
   double xAngle;/* 弧度单位 */
   double xQuatMulti;
@@ -220,10 +220,9 @@ extern int PostureInp(coorquat *pQuatS, coorquat *pQuatE, double xVmax, double x
 
   xQuatMulti = q0s * q0e + q1s * q1e + q2s * q2e + q3s * q3e;
 
-  if((xQuatMulti - 1) < 0.00001)       xQuatMulti = 1;
-  else if((xQuatMulti + 1) < -0.00001) xQuatMulti = -1;
-
   xAngle = acos(xQuatMulti);/* 两个四元数之前的夹角 */
+
+  pInpPara->xAngle = xAngle;
 
   if(xAngle <= 0.000001)  xAngle = 0;
 
@@ -240,13 +239,15 @@ extern int PostureInp(coorquat *pQuatS, coorquat *pQuatE, double xVmax, double x
       iCstT = xAngle / xVmax;
     }
     else{
-      iUpT  = xVmax / xAcc;
+      iDwnT = iUpT  = xVmax / xAcc;
 
       xAngle -= (dUpL + dUpL);
       iCstT = xAngle / xVmax;
     }
     nCycle = (iUpT + iDwnT + iCstT);
   }
+
+  pInpPara->nCycle = nCycle;
 
   return;
 }

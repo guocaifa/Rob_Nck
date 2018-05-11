@@ -37,6 +37,12 @@ typedef struct
 
 typedef struct
 {
+  int    nCycle;   /* 插补周期 */
+  double xAngle;   /* 两个四元数之前的夹角 */
+}quatinp;
+
+typedef struct
+{
   double xCoor[3];  /* xyz */
   double xEuler[3]; /* q1,q2,q3 */
 }cooreuler;
