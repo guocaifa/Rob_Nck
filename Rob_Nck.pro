@@ -4,12 +4,12 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+#QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+#greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = Rob_Nck
-TEMPLATE = app
+#TARGET = Rob_Nck
+#TEMPLATE = app
 
 
 SOURCES += main.cpp\

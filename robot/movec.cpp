@@ -23,14 +23,22 @@
  ******************************************************************************/
 #include <string.h>
 #include "movec.h"
+#include "nck.h"
 
 static void GetCycleProperty(cycle *pCycle, point *pCrn, point *pMid, point *pTrg);
 
-extern void MoveC(cooreuler *pCrn, cooreuler *pMid, cooreuler *pTgt, double Vmax, double Acc)
+extern void MoveC(coorquat *pCrn, coorquat *pMid, coorquat *pTgt, double Vmax, double Acc)
 {
-  double Tmax;
-  point  PointS,PointM,PointE;
-  point  PCrn;
+  int      RunTMax,RunT = 0;
+  point    PointS,PointM,PointE;
+  point    PCrn;
+
+  coorquat xQuat;
+
+  quatinp  Pose;
+  double   xAngle;
+
+  double   xSin1,xSin2;
 
   cycle Property;
   memset(&Property, 0, sizeof(cycle));
@@ -43,17 +51,31 @@ extern void MoveC(cooreuler *pCrn, cooreuler *pMid, cooreuler *pTgt, double Vmax
 
   GetCycleProperty(&Property, &PointS, &PointM, &PointE);
 
+  PostureInp(&Pose, pCrn, pTgt, Vmax, Acc);
+  RunTMax   = Pose.nCycle;
+  xAngle    = Pose.xAngle;
+
   Vmax = Vmax / Property.xR;/* 线速度->角速度 */
 
   if(Property.xCycDir){
-    PCrn.Val[0] = Property.xR * cos(-Vmax * Tmax);
-    PCrn.Val[1] = Property.xR * sin(-Vmax * Tmax);;
+    PCrn.Val[0] = Property.xR * cos(-Vmax * RunTMax);
+    PCrn.Val[1] = Property.xR * sin(-Vmax * RunTMax);;
     PCrn.Val[2] = 0;
   }
   else{
-    PCrn.Val[0] = Property.xR * cos(Vmax * Tmax);
-    PCrn.Val[1] = Property.xR * sin(Vmax * Tmax);;
+    PCrn.Val[0] = Property.xR * cos(Vmax * RunTMax);
+    PCrn.Val[1] = Property.xR * sin(Vmax * RunTMax);;
     PCrn.Val[2] = 0;
+  }
+
+  for(RunT = 0; RunT <= RunTMax; RunT++){
+
+    xSin1 = sin(((RunTMax - RunT) * xAngle) / RunTMax);
+    xSin2 = sin((RunT * xAngle) / RunTMax);
+
+    for(int j = 0; j < 4; j++){
+      xQuat.xQuat[j] = (pCrn->xQuat[j] * xSin1 + pTgt->xQuat[j] * xSin2) / sin(xAngle);
+    }
   }
 
   /* 转化到工作坐标系 */

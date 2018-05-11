@@ -37,7 +37,7 @@ extern void MoveAbsJoint(double *AngleTarget, double Vmax)
 
   if(RunTMax != 0){/*  */
 
-    while(RunT <= RunTMax){/* 运行到目标点 */
+    for(RunT = 0; RunT <= RunTMax; RunT++){
       for(int i = 0; i < 6; i++){
 
         a[0] = xRobSys.xAngleCrn[i];
@@ -56,8 +56,6 @@ extern void MoveAbsJoint(double *AngleTarget, double Vmax)
           break;
         }
       }
-
-      RunT += 1;
 
       /* 发送角度给电机 */
     }
