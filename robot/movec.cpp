@@ -57,7 +57,7 @@ extern void MoveC(coorquat *pCrn, coorquat *pMid, coorquat *pTgt, double Vmax, d
 
   Vmax = Vmax / Property.xR;/* 线速度->角速度 */
 
-  if(Property.xCycDir){
+  if(Property.xCycDir){/* 获得圆弧方向 */
     PCrn.Val[0] = Property.xR * cos(-Vmax * RunTMax);
     PCrn.Val[1] = Property.xR * sin(-Vmax * RunTMax);;
     PCrn.Val[2] = 0;
@@ -68,6 +68,7 @@ extern void MoveC(coorquat *pCrn, coorquat *pMid, coorquat *pTgt, double Vmax, d
     PCrn.Val[2] = 0;
   }
 
+  /* 进行插补工作 */
   for(RunT = 0; RunT <= RunTMax; RunT++){
 
     xSin1 = sin(((RunTMax - RunT) * xAngle) / RunTMax);
@@ -79,22 +80,6 @@ extern void MoveC(coorquat *pCrn, coorquat *pMid, coorquat *pTgt, double Vmax, d
   }
 
   /* 转化到工作坐标系 */
-
-  return;
-}
-
-/* 函数说明；求圆弧的圆心
- *
-*/
-static void GetCycleO(point *pO, const point *pCrn, const point *pMid, const point *pEnd)
-{
-
-  /* x */
-//  pO->Val[0] = ;
-  /* y */
-//  pO->Val[1] = ;
-  /* z */
-//  pO->Val[2] = ;
 
   return;
 }
@@ -193,9 +178,3 @@ static void GetCycleProperty(cycle *pCycle, point *pCrn, point *pMid, point *pTr
   return;
 }
 
-static void __inline MatDet(double *pDetVal, point *pCol1, point *pCol2, point *pCol3)
-{
-  double det;
-
-  *pDetVal = det;
-}

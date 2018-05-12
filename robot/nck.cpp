@@ -66,8 +66,6 @@ static void GetRobParameter(robsys *pSys)
 extern void InitRobotParameter(robsys *pSys)
 {
 	
-
-
 	GetRobParameter(pSys);
 
 	return;
