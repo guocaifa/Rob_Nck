@@ -50,7 +50,7 @@ extern void RodShiftFormula(robsys *pSys);
 /*-----------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------*/
 
-extern void GetRobStatusCrn(matrix4_4 *pStatusCrn,robotpara *pRobPara, double *pAngle);
+extern void GetRobStatusCrn(matrix4_4 *pStatusCrn, double *pAngle);
 extern void GetRobJointAngle(matrix4_4 *pRobStatus, robotpara *pRobPara, double *pAngle);
 
 extern void PostureInp(quatinp *pInpPara, coorquat *pQuatS, coorquat *pQuatE, double xVmax, double xAcc);

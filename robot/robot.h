@@ -107,6 +107,4 @@ extern void InitRobSys(robsys *pRobSys);
 
 extern void Quat2Matrix(matrix4_4 *pMatrix, coorquat *pCoorQuat);
 
-extern void QuatMulti(coorquat *pResult, coorquat *pFirst, coorquat *pSecond);
-
 #endif

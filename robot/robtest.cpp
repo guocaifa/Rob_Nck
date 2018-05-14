@@ -34,5 +34,13 @@ extern void RobTestQuat(void)
 
 extern void RobTestKinematics(void)
 {
+  matrix4_4 RobStatus;
 
+  xRobSys.xAngleCrn[0] = PI/6;  xRobSys.xAngleCrn[1] = 0;
+  xRobSys.xAngleCrn[2] = 0;  xRobSys.xAngleCrn[3] = 0;
+  xRobSys.xAngleCrn[4] = 0;  xRobSys.xAngleCrn[5] = 0;
+
+  GetRobStatusCrn(&RobStatus, xRobSys.xAngleCrn);
+
+  return;
 }

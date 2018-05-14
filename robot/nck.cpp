@@ -41,20 +41,20 @@ static void GetRobParameter(robsys *pSys)
 	pSys->xParameter.RodDistance[0] = d1;
 	pSys->xParameter.RodLength[0]   = a1;
 	/* 第二轴 */
-	pSys->xParameter.RodDistance[0] = 0;
-	pSys->xParameter.RodLength[0]   = a2;
+  pSys->xParameter.RodDistance[1] = 0;
+  pSys->xParameter.RodLength[1]   = a2;
 	/* 第三轴 */
-	pSys->xParameter.RodDistance[0] = 0;
-	pSys->xParameter.RodLength[0]   = a3;
+  pSys->xParameter.RodDistance[2] = 0;
+  pSys->xParameter.RodLength[2]   = a3;
 	/* 第四轴 */
-	pSys->xParameter.RodDistance[0] = d4;
-	pSys->xParameter.RodLength[0]   = 0;
+  pSys->xParameter.RodDistance[3] = d4;
+  pSys->xParameter.RodLength[3]   = 0;
 	/* 第五轴 */
-	pSys->xParameter.RodDistance[0] = 0;
-	pSys->xParameter.RodLength[0]   = 0;
+  pSys->xParameter.RodDistance[4] = 0;
+  pSys->xParameter.RodLength[4]   = 0;
 	/* 第六轴 */
-	pSys->xParameter.RodDistance[0] = 0;
-	pSys->xParameter.RodLength[0]   = 0;
+  pSys->xParameter.RodDistance[5] = 0;
+  pSys->xParameter.RodLength[5]   = 0;
 
 	return;
 }
@@ -75,7 +75,7 @@ extern void InitRobotParameter(robsys *pSys)
  * 参    数：
  * 返 回 值：无
 */
-extern void GetRobStatusCrn(matrix4_4 *pStatusCrn, robotpara *pRobPara, double *pAngle)
+extern void GetRobStatusCrn(matrix4_4 *pStatusCrn, double *pAngle)
 {
   double *AngleCrn = pAngle;
   matrix4_4  StatusCrn;
@@ -94,11 +94,11 @@ extern void GetRobStatusCrn(matrix4_4 *pStatusCrn, robotpara *pRobPara, double *
 	c23 = cos(AngleCrn[1] + AngleCrn[2]);
 	s23 = sin(AngleCrn[1] + AngleCrn[2]);
 
-  a1 = pRobPara->RodLength[0];
-  d1 = pRobPara->RodDistance[0];
-  a2 = pRobPara->RodLength[0];
-  a3 = pRobPara->RodLength[0];
-  d4 = pRobPara->RodDistance[0];
+  a1 = xRobSys.xParameter.RodLength[0];
+  d1 = xRobSys.xParameter.RodDistance[0];
+  a2 = xRobSys.xParameter.RodLength[1];
+  a3 = xRobSys.xParameter.RodLength[2];
+  d4 = xRobSys.xParameter.RodDistance[3];
 
 	StatusCrn.Val[0][0] = s1 * c4 * s5 - c1 * c23 * s4 * s6 + s1 * s4 * c5 *s6 + c1 * c23 * c4 * c5 * c6 - c1 * s23 * s5;
 	StatusCrn.Val[1][0] = c1 * c4 * s6 + s1 * c23 * s4 * s6 - c1 * s4 * c5 * c6 + s1 * c23 * c4 * c5 * c6 + s1 * s23 * s5;
@@ -112,9 +112,9 @@ extern void GetRobStatusCrn(matrix4_4 *pStatusCrn, robotpara *pRobPara, double *
 	StatusCrn.Val[1][2] = s1 * s23 * c4 - c1 * c4 * s5 + s1 * c23 * c4 * s5;
 	StatusCrn.Val[2][2] = c4 * s5 * s23 - c23 * c5;
 
-	StatusCrn.Val[0][3] = a1 * c1 + a2 * c1 * c2 + a3 * c1 * c23 + d4 * c1 * s23;
-	StatusCrn.Val[1][3] = a1 * s1 + a2 * s1 * c2 + a3 * s1 * c23 + d4 * s1 * s23;
-	StatusCrn.Val[2][3] = d1 + a2 * s2 + a3 * s23 - d4 * c23;
+  StatusCrn.Val[0][3] = a1 * c1 + a2 * c1 * s2 + a3 * c1 * s23 + d4 * c1 * c23;
+  StatusCrn.Val[1][3] = a1 * s1 + a2 * s1 * s2 + a3 * s1 * s23 + d4 * s1 * c23;
+  StatusCrn.Val[2][3] = d1 + a2 * c2 + a3 * c23 - d4 * s23;
 
 	StatusCrn.Val[3][0] = 0;
 	StatusCrn.Val[3][1] = 0;
